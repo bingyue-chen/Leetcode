@@ -1,22 +1,18 @@
 class Solution {
 public:
-    vector<int> productExceptSelf(vector<int>& nums) {
-        int size = (int)nums.size();
+    vector<int> productExceptSelf(vector<int>& nums) {        
+        vector<int> ans(nums.size(), 1);
         
-        vector<int> ans(size, 1);
-                
-        int carry = 1;
-        for(int i = 0; i < size; i++){
-            ans[i] = carry * ans[i];
-            carry = nums[i] * carry;
+        int carry_l = 1, carry_r = 1;
+        int l2r = 0, r2l = nums.size() - 1;
+        
+        for(; r2l >= 0; l2r++, r2l--){
+            ans[l2r] = carry_l * ans[l2r];
+            carry_l = nums[l2r] * carry_l;
+            
+            ans[r2l] = carry_r * ans[r2l];
+            carry_r = nums[r2l] * carry_r;
         }
-        
-        carry = 1;
-        for(int i = size-1; i >= 0; i--){
-            ans[i] = carry * ans[i];
-            carry = nums[i] * carry;
-        }
-        
         
         return ans;
     }
